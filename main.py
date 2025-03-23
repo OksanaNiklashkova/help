@@ -21,16 +21,29 @@ print(
 Результат обработки - {get_date(input_date)}"""
 )
 
-# функция, маскирующая данные о счете или карте
-common_for_mask = input_information[int(input("Введите номер строки от 1 до 8: "))]
-print(
-    f"""Входные данные данные - {common_for_mask}
-Результат обработки - {mask_account_card(common_for_mask)}"""
-)
+# функции сортировки операций по статусу и дате
+operations = [json.loads(line) for line in input_information[15:19]]
 
-# функция, преобразующая дату в стандартный формат
-input_date = str(input_information[int(input("Введите номер строки от 10 до 12: "))])
-print(
-    f"""Входные данные данные - {input_date}
-Результат обработки - {get_date(input_date, flow=True)}"""
+state_check = int(
+    input(
+        """Выберите статус операции:
+              1 - успешно проведена
+              0 - отменена
+              - """
+    )
 )
+if state_check == False:
+    state = "CANCELED"
+else:
+    state = "EXECUTED"
+print(filter_by_state(operations, state))
+
+flow = bool(
+    input(
+        """Выберите направление сортировки операции по дате:
+              1 - по убыванию
+              0 - по возрастанию
+              - """
+    )
+)
+print(sort_by_date(operations, flow))
